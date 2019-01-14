@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Header, Button, Input } from 'react-native-elements';
 import SplashScreen from 'react-native-splash-screen';
@@ -15,7 +15,8 @@ export default class Devices extends Component {
     super(props);
 
     this.state = {
-      devices: []
+      devices: [],
+      refreshing: false
     }
 
   }
@@ -34,6 +35,14 @@ export default class Devices extends Component {
     });
   };
 
+  _onRefresh = () => {
+    this._downloadDataFromDatabase();
+    this.setState({ refreshing: true });
+    setTimeout(() => {
+      this.setState({ refreshing: false });
+    }, 200)
+  }
+
   async componentDidMount() {
 
     SplashScreen.hide();
@@ -41,14 +50,19 @@ export default class Devices extends Component {
 
   }
 
-  goToModalScreen = (componentName, title) => {
+  goToModalScreen = (componentName, title, id, name, place, command, colorOfTile) => {
     Navigation.showModal({
       stack: {
         children: [{
           component: {
             name: componentName,
             passProps: {
-              componentId: componentName
+              componentId: componentName,
+              id: id,
+              name: name,
+              place: place,
+              command: command,
+              colorOfTile: colorOfTile
             },
             options: {
               topBar: {
@@ -63,12 +77,6 @@ export default class Devices extends Component {
     });
   }
 
-  editDelete = () =>{
-    Alert.alert("daf")
-  }
-
-
-
   render() {
 
     let rowsOfTiles = [];
@@ -78,7 +86,15 @@ export default class Devices extends Component {
         <View key={i}>
           <TouchableOpacity style={
             [styles.tile, { backgroundColor: this.state.devices[i].colorOfTile }]}
-            onLongPress={()=>this.editDelete()}>
+            onLongPress={() => this.goToModalScreen(
+              'EditDelete',
+              'Edit or delete',
+              this.state.devices[i].id,
+              this.state.devices[i].name,
+              this.state.devices[i].place,
+              this.state.devices[i].command,
+              this.state.devices[i].colorOfTile,
+            )}>
             <Text style={styles.tileTextName}>{this.state.devices[i].name}</Text>
             <Text style={styles.tileTextPlace}>{this.state.devices[i].place}</Text>
           </TouchableOpacity>
@@ -103,7 +119,7 @@ export default class Devices extends Component {
               <Text style={styles.tileTextPlus}>+</Text>
 
             </TouchableOpacity>
-            
+
 
           </View>
 
@@ -115,7 +131,12 @@ export default class Devices extends Component {
 
     return (
 
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container}
+        refreshControl={<RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+        }>
         <View>
           <Header
             centerComponent={{ text: 'Device', style: { color: '#fff', fontSize: 25 } }}
@@ -123,7 +144,9 @@ export default class Devices extends Component {
         </View>
         {rowsOfTiles}
 
+
       </ScrollView>
+
 
     );
   }
@@ -158,6 +181,10 @@ const styles = StyleSheet.create({
     fontSize: 96,
     textAlign: 'center',
     borderWidth: 1,
+  },
+  tileTextId: {
+    fontSize: 20,
+    textAlign: 'center'
   }
 
 });

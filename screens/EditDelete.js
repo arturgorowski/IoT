@@ -1,21 +1,23 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 import SQLite from 'react-native-sqlite-storage';
- 
-var db = SQLite.openDatabase({name: 'database.db', createFromLocation: '~www/database.db'});
+
+var db = SQLite.openDatabase({ name: 'database.db', createFromLocation: '~www/database.db' });
 
 export default class EditDelete extends Component {
-  
+
   constructor(props) {
     super(props);
 
     this.state = {
+      devices: [],
+      id: '',
       name: '',
       place: '',
       command: '',
-      colorOfTile: this.props.colorOfTile,
+      colorOfTile: '',
     }
 
   }
@@ -35,46 +37,66 @@ export default class EditDelete extends Component {
     })
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
+      id: this.props.id,
       name: this.props.name,
       place: this.props.place,
-      command: this.props.command
-      
+      command: this.props.command,
+      colorOfTile: this.props.colorOfTile
     })
   }
 
 
-  addDeviceToDatabase(name, place, command, colorOfTile){
+  editDeviceAtDatabase(id, name, place, command, colorOfTile) {
 
-    if(this.state.name === '' ||
+    if (this.state.name === '' ||
       this.state.place === '' ||
-      this.state.command === '' 
-    ){
+      this.state.command === ''
+    ) {
 
       alert("Uzupełnij wszystkie pola!")
-      
+
     } else {
 
-      db.transaction((tx) => {
+    db.transaction((tx) => {
 
-        let query = `INSERT INTO devices (name, place, command, colorOfTile) 
-                  VALUES ('${name}','${place}','${command}','${colorOfTile}'`;
-        
-        query = query + ")"  
+      let query = `UPDATE devices 
+        SET name='${name}', place='${place}', command='${command}', colorOfTile='${colorOfTile}'
+        WHERE id='${id}'`;
 
-        db.executeSql(query);
+      query = query + ")"
 
-      });
-      
-      // Navigation.dismissAllModals();
-      // this.closeModal();
-      this.goToScreen('Devices')
+      db.executeSql(query);
+
+    });
+
+    // Navigation.dismissAllModals();
+    // this.closeModal();
+    //this.goToScreen('Devices')
+    Navigation.dismissModal(this.props.componentId);
 
     }
   }
 
-  closeModal(){
+  deleteData(id){
+    db.transaction((tx) => {
+
+      let query = `DROP FROM devices WHERE id='${id}'`;
+
+      query = query + ")"
+
+      db.executeSql(query);
+
+    });
+
+    // Navigation.dismissAllModals();
+     this.closeModal();
+    //this.goToScreen('Devices')
+    //Navigation.dismissModal(this.props.componentId);
+  }
+
+  closeModal() {
     Navigation.dismissModal(this.props.componentId);
   }
 
@@ -85,6 +107,7 @@ export default class EditDelete extends Component {
           component: {
             name: componentName,
             passProps: {
+              id: this.state.id,
               name: this.state.name,
               place: this.state.place,
               command: this.state.command
@@ -105,60 +128,64 @@ export default class EditDelete extends Component {
   render() {
 
     return (
-        <View style={styles.container}>
+      <View style={styles.container}>
+     
+        <View style={styles.inputs}>
 
-          <View style={styles.inputs}>
+          <TextInput style={styles.textInput}
+            onChangeText={(text) => {
+              this.setState({
+                name: text
+              })
+            }}
+            value={this.state.name}
+          />
 
-            <TextInput style={styles.textInput} placeholder="Name"
-                onChangeText={(text) => {
-                  this.setState({
-                      name: text  
-                  })
-                }}
-                value={this.state.name}         
-            />
+          <TextInput style={styles.textInput} placeholder={this.state.place}
+            onChangeText={(text) => {
+              this.setState({
+                place: text
+              })
+            }
+            }
+            value={this.state.place}
+          />
 
-            <TextInput style={styles.textInput} placeholder="Place"
-                onChangeText={(text) => {
-                  this.setState({
-                      place: text  
-                  })
-                }
-                }       
-                value={this.state.place}     
-            />
+          <TextInput style={styles.textInput} placeholder="Command"
+            onChangeText={(text) => {
+              this.setState({
+                command: text
+              })
+            }
+            }
+            value={this.state.command}
+          />
 
-            <TextInput style={styles.textInput} placeholder="Command"
-                onChangeText={(text) => {
-                  this.setState({
-                      command: text  
-                  })
-                }
-                }     
-                value={this.state.command}       
-            />  
+          <TouchableOpacity style={[{ backgroundColor: this.state.colorOfTile }, styles.inputColor]}
+            onPress={() => this.goToColorPicking('PickingColor', 'Color picking')}>
+            <Text></Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={[{backgroundColor: this.state.colorOfTile}, styles.inputColor ]} 
-                              onPress={()=>this.goToColorPicking('PickingColor','Color picking')}>
-              <Text></Text>
-            </TouchableOpacity>
-
-
-          </View>
-
-          <View style={styles.menu}>
-
-            <TouchableOpacity style={styles.btn} onPress={()=> this.closeModal()}>
-              <Text style={styles.btnTxt}>Cancel</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.btn} 
-                              onPress={()=> this.addDeviceToDatabase(this.state.name, this.state.place, this.state.command, this.state.colorOfTile)} >
-              <Text style={styles.btnTxt}>Save</Text>
-            </TouchableOpacity>
-          </View>
 
         </View>
+
+        <View style={styles.menu}>
+
+          <TouchableOpacity style={styles.btn}
+            onPress={() => this.editDeviceAtDatabase(this.state.name, this.state.place, this.state.command, this.state.colorOfTile)} >
+            <Text style={styles.btnTxt}>Save</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btn} onPress={() => this.closeModal()}>
+            <Text style={styles.btnTxt}>Cancel</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btn} onPress={() => this.deleteData(this.state.id)}>
+            <Text style={styles.btnTxt}>Delete</Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
     );
   }
 }
@@ -208,9 +235,8 @@ const styles = StyleSheet.create({
   },
   menu: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: 'column',
+    alignItems: 'center',
     justifyContent: 'space-around'
-  },
-
+  }
 });

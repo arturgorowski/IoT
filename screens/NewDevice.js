@@ -67,10 +67,10 @@ export default class NewDevice extends Component {
 
       });
       
-      // Navigation.dismissAllModals();
+      Navigation.dismissAllModals();
       // this.closeModal();
-      this.goToScreen('Devices')
-
+      //this.goToScreen('Devices')
+      //Navigation.dismissModal(this.props.componentId);
     }
   }
 
