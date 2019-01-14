@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import { Header, Button, Input } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 import SplashScreen from 'react-native-splash-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import _ from 'lodash';
@@ -36,7 +36,7 @@ export default class Devices extends Component {
   };
 
   _onRefresh = () => {
-    this._downloadDataFromDatabase();
+    //this._downloadDataFromDatabase();
     this.setState({ refreshing: true });
     setTimeout(() => {
       this.setState({ refreshing: false });
@@ -50,7 +50,29 @@ export default class Devices extends Component {
 
   }
 
-  goToModalScreen = (componentName, title, id, name, place, command, colorOfTile) => {
+  goToModalScreen = (componentName, title) => {
+    Navigation.showModal({
+      stack: {
+        children: [{
+          component: {
+            name: componentName,
+            passProps: {
+              componentId: componentName,
+            },
+            options: {
+              topBar: {
+                title: {
+                  text: title
+                }
+              }
+            }
+          }
+        }]
+      }
+    });
+  }
+
+  goToEditDeleteScreen = (componentName, title, id, name, place, command, colorOfTile) => {
     Navigation.showModal({
       stack: {
         children: [{
@@ -86,7 +108,7 @@ export default class Devices extends Component {
         <View key={i}>
           <TouchableOpacity style={
             [styles.tile, { backgroundColor: this.state.devices[i].colorOfTile }]}
-            onLongPress={() => this.goToModalScreen(
+            onLongPress={() => this.goToEditDeleteScreen(
               'EditDelete',
               'Edit or delete',
               this.state.devices[i].id,
@@ -95,6 +117,7 @@ export default class Devices extends Component {
               this.state.devices[i].command,
               this.state.devices[i].colorOfTile,
             )}>
+            <Text style={styles.tileTextName}>{this.state.devices[i].id}</Text>
             <Text style={styles.tileTextName}>{this.state.devices[i].name}</Text>
             <Text style={styles.tileTextPlace}>{this.state.devices[i].place}</Text>
           </TouchableOpacity>

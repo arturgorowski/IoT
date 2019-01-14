@@ -2,6 +2,9 @@ package com.iot;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.polidea.reactnativeble.BlePackage;
+import com.polidea.reactnativeble.BlePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
@@ -41,11 +44,13 @@ public class MainApplication extends NavigationApplication {
 
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
-                new MainReactPackage(),
+            new MainReactPackage(),
+            new LinearGradientPackage(),
+            new BlePackage(),
             new VectorIconsPackage(),
-                new SQLitePluginPackage(),   // register SQLite Plugin here
-                new SplashScreenReactPackage(),
-                new LinearGradientPackage()
+            new SQLitePluginPackage(),   // register SQLite Plugin here
+            new SplashScreenReactPackage(),
+            new LinearGradientPackage()
         );
     }
 

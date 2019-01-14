@@ -12,7 +12,6 @@ export default class EditDelete extends Component {
     super(props);
 
     this.state = {
-      devices: [],
       id: '',
       name: '',
       place: '',

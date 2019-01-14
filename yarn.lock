@@ -4984,6 +4984,11 @@ react-lifecycles-compat@2.0.0:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-2.0.0.tgz#71d9c4cde47114c4102454f76da055c2bc48c948"
   integrity sha512-txfpPCQYiazVdcbMRhatqWKcAxJweUu2wDXvts5/7Wyp6+Y9cHojqXHsLPEckzutfHlxZhG8Oiundbmp8Fd6eQ==
 
+react-native-ble-plx@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-ble-plx/-/react-native-ble-plx-1.0.1.tgz#6ab5f3a5f9937b6a6410929dc222368f6e4dd1de"
+  integrity sha512-bC8yAVg0WuuMdEIr+kIHs8nd4leHyUvrYILBBOlcsggmNvgFDC8iXqEAvjpeRXMrqPVjPhft2EtFAQlEfjWvdA==
+
 react-native-color-picker@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-native-color-picker/-/react-native-color-picker-0.4.0.tgz#801a413a20b833ea8aa9b10418c3761dd4d88fb6"
