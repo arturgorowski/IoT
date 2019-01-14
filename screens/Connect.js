@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Header} from 'react-native-elements';
 
 type Props = {};
 export default class Connect extends Component<Props> {
@@ -10,7 +11,12 @@ export default class Connect extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View >
+        <View>
+          <Header
+            centerComponent={{ text: 'Connect', style: { color: '#fff', fontSize: 20 } }}
+          />
+        </View>
         <Text style={styles.default}>Connect screen!</Text>
       </View>
     );

@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import _ from 'lodash';
 import {Navigation} from 'react-native-navigation';
 import SQLite from 'react-native-sqlite-storage';
  
 var db = SQLite.openDatabase({name: 'database.db', createFromLocation: '~www/database.db'});
 
-export default class Creatingdevice extends Component {
+export default class NewDevice extends Component {
   
   constructor(props) {
     super(props);
@@ -106,8 +105,6 @@ export default class Creatingdevice extends Component {
   render() {
 
     return (
-      <LinearGradient colors={['#A6fcd2','#Afd5f6']} style={styles.linearGradient}>
-
         <View style={styles.container}>
 
           <View style={styles.inputs}>
@@ -142,7 +139,7 @@ export default class Creatingdevice extends Component {
             />  
 
             <TouchableOpacity style={[{backgroundColor: this.state.colorOfTile}, styles.inputColor ]} 
-                              onPress={()=>this.goToColorPicking('Pickingcolor','Color picking')}>
+                              onPress={()=>this.goToColorPicking('PickingColor','Color picking')}>
               <Text></Text>
             </TouchableOpacity>
 
@@ -162,7 +159,6 @@ export default class Creatingdevice extends Component {
           </View>
 
         </View>
-      </LinearGradient>
     );
   }
 }

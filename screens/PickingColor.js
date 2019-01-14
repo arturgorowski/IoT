@@ -8,7 +8,7 @@ import SQLite from 'react-native-sqlite-storage';
  
 var db = SQLite.openDatabase({name: 'database.db', createFromLocation: '~www/database.db'});
 
-export default class Pickingcolor extends Component {
+export default class PickingColor extends Component {
   
   constructor(props) {
     super(props);
@@ -24,7 +24,7 @@ export default class Pickingcolor extends Component {
   goBack = (color) => {
     Navigation.push(this.props.componentId, {
       component: {
-        name: 'Creatingdevice',
+        name: 'NewDevice',
         passProps: {
             colorOfTile: color,
             name: this.state.name,
