@@ -6,16 +6,7 @@
     android:background="@color/blue"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/candal"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@color/colorBottomNavigationActiveColored"
-        android:textSize="48sp"
-        android:textStyle="bold" />
+   
 
     <ImageView
         android:layout_width="120dp"

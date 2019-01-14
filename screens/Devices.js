@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { Header, Button, Input } from 'react-native-elements';
 import SplashScreen from 'react-native-splash-screen';
@@ -63,6 +63,9 @@ export default class Devices extends Component {
     });
   }
 
+  editDelete = () =>{
+    Alert.alert("daf")
+  }
 
 
 
@@ -73,8 +76,9 @@ export default class Devices extends Component {
     for (let i = 0; i < this.state.devices.length; i++) {
       row.push(
         <View key={i}>
-          <TouchableOpacity style={[styles.tile, { backgroundColor: this.state.devices[i].colorOfTile }]}>
-            <Text style={styles.tileEdit}>.</Text>
+          <TouchableOpacity style={
+            [styles.tile, { backgroundColor: this.state.devices[i].colorOfTile }]}
+            onLongPress={()=>this.editDelete()}>
             <Text style={styles.tileTextName}>{this.state.devices[i].name}</Text>
             <Text style={styles.tileTextPlace}>{this.state.devices[i].place}</Text>
           </TouchableOpacity>
