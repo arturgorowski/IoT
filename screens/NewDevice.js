@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
 import _ from 'lodash';
 import {Navigation} from 'react-native-navigation';
 import SQLite from 'react-native-sqlite-storage';
@@ -52,7 +52,7 @@ export default class NewDevice extends Component {
       this.state.command === '' 
     ){
 
-      alert("Uzupełnij wszystkie pola!")
+      Alert.alert("Uzupełnij wszystkie pola!")
       
     } else {
 

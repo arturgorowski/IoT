@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import _ from 'lodash';
 import { Navigation } from 'react-native-navigation';
 import SQLite from 'react-native-sqlite-storage';
@@ -48,26 +48,27 @@ export default class EditDelete extends Component {
   }
 
 
-  editDeviceAtDatabase(id, name, place, command, colorOfTile) {
+  editDeviceAtDatabase = (id, name, place, command, colorOfTile) => {
 
     if (this.state.name === '' ||
       this.state.place === '' ||
       this.state.command === ''
     ) {
 
-      alert("Uzupełnij wszystkie pola!")
+      Alert.alert("Uzupełnij wszystkie pola!")
 
     } else {
 
     db.transaction((tx) => {
 
-      let query = `UPDATE devices 
+      /*let query = `UPDATE devices 
         SET name='${name}', place='${place}', command='${command}', colorOfTile='${colorOfTile}'
         WHERE id='${id}'`;
+      db.executeSql(query);*/
+      
+      db.executeSql('UPDATE devices SET name = ?, place = ?, command = ?, colorOfTile = ? WHERE id = ?;',	  
+      [this.state.name, this.state.place, this.state.command, this.state.colorOfTile, this.state.id]	);
 
-      query = query + ")"
-
-      db.executeSql(query);
 
     });
 
@@ -75,25 +76,24 @@ export default class EditDelete extends Component {
     // this.closeModal();
     //this.goToScreen('Devices')
     Navigation.dismissModal(this.props.componentId);
-
     }
   }
 
-  deleteData(id){
+  deleteData = (id) =>{
+
     db.transaction((tx) => {
+      /*let query = `DROP FROM devices WHERE id='${id}'`;
+      query = query + ")"*/
 
-      let query = `DROP FROM devices WHERE id='${id}'`;
-
-      query = query + ")"
-
-      db.executeSql(query);
+      db.executeSql('DELETE FROM devices WHERE id=?;',
+      [this.state.id]);
 
     });
 
     // Navigation.dismissAllModals();
-     this.closeModal();
+    // this.closeModal();
     //this.goToScreen('Devices')
-    //Navigation.dismissModal(this.props.componentId);
+    Navigation.dismissModal(this.props.componentId);
   }
 
   closeModal() {
