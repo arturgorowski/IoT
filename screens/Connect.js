@@ -11,7 +11,7 @@ export default class Connect extends Component{
     super(props);
     this.manager = new BleManager();
     this.state = {
-      value: 'red'
+      value: 'green'
     }
   }
 
