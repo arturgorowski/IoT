@@ -60,11 +60,6 @@ export default class EditDelete extends Component {
 
     db.transaction((tx) => {
 
-      /*let query = `UPDATE devices 
-        SET name='${name}', place='${place}', command='${command}', colorOfTile='${colorOfTile}'
-        WHERE id='${id}'`;
-      db.executeSql(query);*/
-      
       db.executeSql('UPDATE devices SET name = ?, place = ?, command = ?, colorOfTile = ? WHERE id = ?;',	  
       [this.state.name, this.state.place, this.state.command, this.state.colorOfTile, this.state.id]	);
 
@@ -171,7 +166,7 @@ export default class EditDelete extends Component {
         <View style={styles.menu}>
 
           <TouchableOpacity style={styles.btn}
-            onPress={() => this.editDeviceAtDatabase(this.state.name, this.state.place, this.state.command, this.state.colorOfTile)} >
+            onPress={() => this.editDeviceAtDatabase(this.state.id, this.state.name, this.state.place, this.state.command, this.state.colorOfTile)} >
             <Text style={styles.btnTxt}>Save</Text>
           </TouchableOpacity>
 

@@ -36,8 +36,8 @@ export default class Devices extends Component {
   };
 
   _onRefresh = () => {
-    //this._downloadDataFromDatabase();
-    this.setState({ refreshing: true });
+    this._downloadDataFromDatabase();
+    this.setState({ refreshing: true, devices: [] });
     setTimeout(() => {
       this.setState({ refreshing: false });
     }, 200)
@@ -46,8 +46,9 @@ export default class Devices extends Component {
   async componentDidMount() {
 
     SplashScreen.hide();
+    
     this._downloadDataFromDatabase();
-
+    this._onRefresh();
   }
 
   goToModalScreen = (componentName, title) => {
@@ -142,15 +143,11 @@ export default class Devices extends Component {
               <Text style={styles.tileTextPlus}>+</Text>
 
             </TouchableOpacity>
-
-
           </View>
-
 
         )
       }
     }
-
 
     return (
 

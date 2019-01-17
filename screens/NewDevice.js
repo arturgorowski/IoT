@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react
 import _ from 'lodash';
 import {Navigation} from 'react-native-navigation';
 import SQLite from 'react-native-sqlite-storage';
+
  
 var db = SQLite.openDatabase({name: 'database.db', createFromLocation: '~www/database.db'});
 
@@ -12,6 +13,7 @@ export default class NewDevice extends Component {
     super(props);
 
     this.state = {
+      id: '',
       name: '',
       place: '',
       command: '',
@@ -62,9 +64,10 @@ export default class NewDevice extends Component {
                   VALUES ('${name}','${place}','${command}','${colorOfTile}'`;
         
         query = query + ")"  
-
         db.executeSql(query);
-
+        /*db.executeSql('INSERT INTO devices (id, name, place, command, colorofTitle) VALUES (?,?,?,?,?)',
+        [this.props.id, this.props.name, this.props. place, this.props.command, this.props.colorOfTile])
+        */
       });
       
       Navigation.dismissAllModals();
